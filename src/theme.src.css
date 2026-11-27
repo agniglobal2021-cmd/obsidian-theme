@@ -1,0 +1,1049 @@
+/*
+ * Ars Memoria — тема Obsidian от NOEASY (noeasy.xyz)
+ *
+ * Гримуар в окне старого «Проводника» Windows 95.
+ * Заголовки — KJV 1611 (готика с кириллицей, SIL OFL 1.1, Fredrick R. Brennan).
+ * Текст — Ubuntu Mono (Ubuntu Font Licence 1.0, Canonical).
+ * Логотип NOEASY — собственность автора темы.
+ *
+ * Этот файл собирается из src/theme.src.css командой `python3 src/build.py`.
+ * Правьте src/theme.src.css, а не theme.css.
+ */
+
+/* @settings
+name: Ars Memoria
+id: ars-memoria
+settings:
+    -
+        id: ars-no-grain
+        title: Без шума на листе
+        description: Убрать статичный шум с листа заметки
+        type: class-toggle
+*/
+
+/* ───────────────────────── Шрифты ───────────────────────── */
+
+@font-face { font-family: "Ars Gothic"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("{{FONT:KJV1611-subset.woff2}}") format("woff2"); }
+
+@font-face { font-family: "Ars Mono"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("{{FONT:ubuntu-mono-latin-400-normal.woff2}}") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2190-2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Ars Mono"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("{{FONT:ubuntu-mono-cyrillic-400-normal.woff2}}") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: "Ars Mono"; font-weight: 700; font-style: normal; font-display: swap;
+  src: url("{{FONT:ubuntu-mono-latin-700-normal.woff2}}") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2190-2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Ars Mono"; font-weight: 700; font-style: normal; font-display: swap;
+  src: url("{{FONT:ubuntu-mono-cyrillic-700-normal.woff2}}") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: "Ars Mono"; font-weight: 400; font-style: italic; font-display: swap;
+  src: url("{{FONT:ubuntu-mono-latin-400-italic.woff2}}") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2190-2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Ars Mono"; font-weight: 400; font-style: italic; font-display: swap;
+  src: url("{{FONT:ubuntu-mono-cyrillic-400-italic.woff2}}") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: "Ars Mono"; font-weight: 700; font-style: italic; font-display: swap;
+  src: url("{{FONT:ubuntu-mono-latin-700-italic.woff2}}") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2190-2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Ars Mono"; font-weight: 700; font-style: italic; font-display: swap;
+  src: url("{{FONT:ubuntu-mono-cyrillic-700-italic.woff2}}") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+
+/* ───────────────────────── Общие переменные ───────────────────────── */
+
+body {
+  --ars-gothic: "Ars Gothic", "UnifrakturMaguntia", Georgia, serif;
+  --ars-mono: "Ars Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --ars-grain: url("{{IMG:grain.png}}");
+  --ars-logo: url("{{IMG:logo.png}}");
+  --ars-cross: url("{{SVG:cross}}");
+  --ars-check: url("{{SVG:check}}");
+
+  /* шрифты */
+  --font-text-theme: var(--ars-mono);
+  --font-interface-theme: var(--ars-mono);
+  --font-monospace-theme: var(--ars-mono);
+  --line-height-normal: 1.68;
+  --file-line-width: 66ch;
+  --p-spacing: 1em;
+  --heading-spacing: 1.5em;
+  --bold-weight: 700;
+  --bold-modifier: 300;
+
+  /* заголовки: H1–H3 готикой, H4–H6 моноширинными капителями */
+  --inline-title-font: var(--ars-gothic);
+  --inline-title-size: 4.7em;
+  --inline-title-weight: 400;
+  --inline-title-line-height: 1;
+  --inline-title-margin-bottom: .3em;
+  --h1-font: var(--ars-gothic); --h1-size: 2.75em; --h1-weight: 400; --h1-line-height: 1.05; --h1-letter-spacing: .005em;
+  --h2-font: var(--ars-gothic); --h2-size: 2.24em; --h2-weight: 400; --h2-line-height: 1.08; --h2-letter-spacing: .005em;
+  --h3-font: var(--ars-gothic); --h3-size: 1.65em; --h3-weight: 400; --h3-line-height: 1.1;  --h3-letter-spacing: .005em;
+  --h4-font: var(--ars-mono); --h4-size: .74em; --h4-weight: 700; --h4-line-height: 1.5; --h4-letter-spacing: .18em; --h4-color: var(--ars-red);
+  --h5-font: var(--ars-mono); --h5-size: .72em; --h5-weight: 700; --h5-line-height: 1.5; --h5-letter-spacing: .16em; --h5-color: var(--text-muted);
+  --h6-font: var(--ars-mono); --h6-size: .7em;  --h6-weight: 400; --h6-line-height: 1.5; --h6-letter-spacing: .16em; --h6-color: var(--text-muted);
+
+  /* Win95: прямые углы везде */
+  --radius-s: 0; --radius-m: 0; --radius-l: 0; --radius-xl: 0;
+  --touch-radius-xxs: 0; --touch-radius-xs: 0; --touch-radius-s: 0; --touch-radius-m: 0; --touch-radius-l: 0; --touch-radius-xl: 0;
+  --input-radius: 0; --button-radius: 0; --clickable-icon-radius: 0;
+  --tab-radius: 0; --tab-radius-active: 0; --tab-curve: 0; --tab-outline-width: 0;
+  --callout-radius: 0; --code-radius: 0; --image-radius: 0; --checkbox-radius: 0;
+  --modal-radius: 0; --menu-radius: 0; --nav-item-radius: 0; --tag-radius: 0;
+  --metadata-property-radius: 0; --metadata-property-radius-hover: 0; --metadata-property-radius-focus: 0;
+  --toggle-radius: 0; --toggle-thumb-radius: 0; --slider-thumb-radius: 0;
+  --mobile-sidebar-radius: 0; --navbar-radius: 0; --scrollbar-radius: 0;
+  --embed-action-radius: 0;
+
+  /* пустые рамки, тени и смешивание — свои */
+  --modal-border-width: 0; --prompt-border-width: 0; --menu-border-width: 0;
+  --menu-shadow: none; --modal-shadow: none;
+  --callout-blend-mode: normal; --callout-border-width: 0;
+  --table-border-width: 0; --table-header-border-width: 0;
+  --embed-border-start: none;
+  --tab-divider-color: transparent;
+  --blockquote-border-thickness: 0;
+
+  /* списки и чекбоксы */
+  --list-bullet-radius: 0;
+  --checkbox-size: 22px;
+  --checklist-done-decoration: line-through;
+
+  /* сочетания клавиш в списках — без плашек */
+  --hotkey-background: transparent;
+
+  /* теги — просто текст */
+  --tag-background: transparent; --tag-background-hover: transparent;
+  --tag-border-width: 0; --tag-padding-x: 0;
+}
+
+/* ───────────────────────── Светлая тема ───────────────────────── */
+
+.theme-light {
+  color-scheme: light;
+  --ars-page: #b39978;          /* лист */
+  --ars-ink: #2b2119;           /* чернила */
+  --ars-muted: #5f4d3a;
+  --ars-faint: #7d6a54;
+  --ars-red: #7d2416;           /* киноварь */
+  --ars-red-hover: #9a3220;
+  --ars-gold: #8c6420;
+  --ars-on-red: #f6ead2;
+
+  --ars-p-hi: #d2c2a8;          /* блик и тень на листе: бороздки, вдавленные панели */
+  --ars-p-sh: #6e5a44;
+  --ars-p-mid: #94795a;
+  --ars-p-well: #a68b69;
+  --ars-p-box: #e2d3b6;         /* окошко чекбокса */
+
+  --ars-face: #a18561;          /* рамка окна — тёмный пергамент */
+  --ars-well: #927857;
+  --ars-hi: #bbaa93;
+  --ars-sh: #4e3d2c;
+  --ars-mid: #6b5840;
+  --ars-chrome-text: #2b2119;
+  --ars-chrome-muted: #3e3024;
+  --ars-bar: #604c39;           /* выделение в дереве */
+  --ars-bar-text: #f3e8d0;
+
+  --ars-win: #b8a07f;           /* диалоги и меню */
+  --ars-win-hi: #dccdb4;
+  --ars-win-sh: #3e2f22;
+  --ars-win-mid: #7a6448;
+  --ars-field: #cdbb9c;
+
+  --ars-select: rgba(125, 36, 22, .24);   /* выделение текста — киноварь */
+  --ars-mark: rgba(125, 36, 22, .18);
+  --ars-grid: rgba(43, 33, 25, .13);
+  --ars-graph-line: rgba(43, 33, 25, .38);
+
+  /* пигменты выносок */
+  --ars-sepia: #4a3626; --ars-verdigris: #2f5a4c; --ars-ochre: #7a5410;
+  --ars-cinnabar: #7d2416; --ars-lapis: #2c3f78; --ars-soot: #4b4642;
+
+  --ars-folder: url("{{SVG:folder-light}}");
+  --ars-folder-open: url("{{SVG:folder-open-light}}");
+  --ars-note: url("{{SVG:note-light}}");
+}
+
+/* ───────────────────────── Тёмная тема ───────────────────────── */
+
+.theme-dark {
+  color-scheme: dark;
+  --ars-page: #403732;
+  --ars-ink: #ebdec4;
+  --ars-muted: #b6a892;
+  --ars-faint: #8d8273;
+  --ars-red: #cf6a52;
+  --ars-red-hover: #e0806a;
+  --ars-gold: #d6aa58;
+  --ars-on-red: #1f1a17;
+
+  --ars-p-hi: #5b504a;
+  --ars-p-sh: #0f0d0c;
+  --ars-p-mid: #292320;
+  --ars-p-well: #2f2825;
+  --ars-p-box: #332c29;
+
+  --ars-face: #342c28;
+  --ars-well: #2b2421;
+  --ars-hi: #5a4f49;
+  --ars-sh: #0d0b0a;
+  --ars-mid: #221c19;
+  --ars-chrome-text: #ebdec4;
+  --ars-chrome-muted: #c2b59f;
+  --ars-bar: #d9c7a5;
+  --ars-bar-text: #1f1a17;
+
+  --ars-win: #4b413b;
+  --ars-win-hi: #6c605a;
+  --ars-win-sh: #0f0d0c;
+  --ars-win-mid: #2a2320;
+  --ars-field: #2f2825;
+
+  --ars-select: rgba(214, 168, 80, .30);  /* выделение текста — позолота */
+  --ars-mark: rgba(207, 106, 82, .25);
+  --ars-grid: rgba(235, 222, 196, .09);
+  --ars-graph-line: rgba(235, 222, 196, .30);
+
+  --ars-sepia: #d9c7a5; --ars-verdigris: #8fc1a8; --ars-ochre: #e0b45a;
+  --ars-cinnabar: #cf6a52; --ars-lapis: #9db0e8; --ars-soot: #b8afa8;
+
+  --ars-folder: url("{{SVG:folder-dark}}");
+  --ars-folder-open: url("{{SVG:folder-open-dark}}");
+  --ars-note: url("{{SVG:note-dark}}");
+}
+
+/* ───────────────────────── Переменные Obsidian ───────────────────────── */
+
+.theme-light, .theme-dark {
+  --mono-100: var(--ars-ink);
+
+  --background-primary: var(--ars-page);
+  --background-primary-alt: var(--ars-p-well);
+  --background-secondary: var(--ars-face);
+  --background-secondary-alt: var(--ars-well);
+  --background-modifier-border: var(--ars-p-mid);
+  --background-modifier-border-hover: var(--ars-mid);
+  --background-modifier-border-focus: var(--ars-sh);
+  --background-modifier-hover: color-mix(in srgb, var(--ars-ink) 7%, transparent);
+  --background-modifier-active-hover: color-mix(in srgb, var(--ars-red) 14%, transparent);
+  --background-modifier-form-field: var(--ars-field);
+  --background-modifier-form-field-hover: var(--ars-field);
+
+  --text-normal: var(--ars-ink);
+  --text-muted: var(--ars-muted);
+  --text-faint: var(--ars-faint);
+  --text-accent: var(--ars-red);
+  --text-accent-hover: var(--ars-red-hover);
+  --text-on-accent: var(--ars-on-red);
+  --text-error: var(--ars-red);
+  --text-selection: var(--ars-select);
+  --text-highlight-bg: var(--ars-mark);
+
+  --color-accent: var(--ars-red);
+  --color-accent-1: var(--ars-red);
+  --color-accent-2: var(--ars-red-hover);
+  --interactive-accent: var(--ars-red);
+  --interactive-accent-hover: var(--ars-red-hover);
+  --interactive-normal: var(--ars-win);
+  --interactive-hover: var(--ars-win-hi);
+
+  --icon-color: var(--ars-chrome-text);
+  --icon-color-hover: var(--ars-chrome-text);
+  --icon-color-active: var(--ars-red);
+  --icon-color-focused: var(--ars-chrome-text);
+
+  --divider-color: var(--ars-sh);
+  --ribbon-background: var(--ars-face);
+  --ribbon-background-collapsed: var(--ars-face);
+  --tab-container-background: var(--ars-face);
+  --tab-background-active: var(--ars-well);
+  --tab-text-color: var(--ars-chrome-muted);
+  --tab-text-color-focused: var(--ars-chrome-muted);
+  --tab-text-color-active: var(--ars-chrome-text);
+  --tab-text-color-focused-active: var(--ars-chrome-text);
+  --tab-text-color-focused-active-current: var(--ars-chrome-text);
+  --titlebar-background: var(--ars-face);
+  --titlebar-background-focused: var(--ars-face);
+  --status-bar-background: var(--ars-face);
+  --status-bar-text-color: var(--ars-chrome-muted);
+  --file-header-background: var(--ars-face);
+  --file-header-background-focused: var(--ars-face);
+  --mobile-sidebar-background: var(--ars-face);
+  --touch-background: var(--ars-face);
+
+  --nav-item-color: var(--ars-chrome-text);
+  --nav-item-color-hover: var(--ars-chrome-text);
+  --nav-item-color-active: var(--ars-chrome-text);
+  --nav-item-color-selected: var(--ars-chrome-text);
+  --nav-item-background-hover: color-mix(in srgb, var(--ars-ink) 8%, transparent);
+  --nav-item-background-active: transparent;
+  --nav-item-background-selected: transparent;
+  --collapse-icon-color: var(--ars-chrome-muted);
+  --collapse-icon-color-collapsed: var(--ars-chrome-muted);
+
+  --modal-background: var(--ars-win);
+  --prompt-background: var(--ars-win);
+  --menu-background: var(--ars-win);
+  --suggestion-background: var(--ars-win);
+  --dropdown-background: var(--ars-win);
+  --dropdown-background-hover: var(--ars-win-hi);
+  --input-shadow: none;
+  --input-shadow-hover: none;
+
+  --link-color: var(--ars-ink);
+  --link-color-hover: var(--ars-red);
+  --link-external-color: var(--ars-ink);
+  --link-external-color-hover: var(--ars-red);
+  --link-unresolved-color: var(--ars-muted);
+  --link-unresolved-opacity: 1;
+  --link-unresolved-decoration-color: color-mix(in srgb, var(--ars-red) 45%, transparent);
+  --link-decoration-thickness: 1px;
+
+  --list-marker-color: var(--ars-red);
+  --list-marker-color-hover: var(--ars-red);
+  --list-marker-color-collapsed: var(--ars-red);
+  --checkbox-color: var(--ars-p-box);
+  --checkbox-color-hover: var(--ars-p-box);
+  --checkbox-border-color: var(--ars-p-sh);
+  --checkbox-border-color-hover: var(--ars-p-sh);
+  --checkbox-marker-color: var(--ars-ink);
+  --checklist-done-color: var(--ars-muted);
+
+  --hr-color: var(--ars-p-sh);
+  --tag-color: var(--ars-muted);
+  --tag-color-hover: var(--ars-red);
+  --indentation-guide-color: color-mix(in srgb, var(--ars-ink) 14%, transparent);
+  --indentation-guide-color-active: color-mix(in srgb, var(--ars-red) 45%, transparent);
+
+  --code-background: var(--ars-p-well);
+  --code-normal: var(--ars-ink);
+  --code-comment: var(--ars-faint);
+  --code-function: var(--ars-ochre);
+  --code-important: var(--ars-red);
+  --code-keyword: var(--ars-red);
+  --code-operator: var(--ars-muted);
+  --code-property: var(--ars-sepia);
+  --code-punctuation: var(--ars-muted);
+  --code-string: var(--ars-verdigris);
+  --code-tag: var(--ars-red);
+  --code-value: var(--ars-lapis);
+
+  --callout-default: var(--ars-sepia);
+  --callout-info: var(--ars-sepia);
+  --callout-todo: var(--ars-sepia);
+  --callout-summary: var(--ars-sepia);
+  --callout-tip: var(--ars-verdigris);
+  --callout-important: var(--ars-verdigris);
+  --callout-success: var(--ars-verdigris);
+  --callout-question: var(--ars-lapis);
+  --callout-example: var(--ars-lapis);
+  --callout-warning: var(--ars-ochre);
+  --callout-fail: var(--ars-cinnabar);
+  --callout-error: var(--ars-cinnabar);
+  --callout-bug: var(--ars-cinnabar);
+  --callout-quote: var(--ars-soot);
+
+  --table-header-color: var(--ars-muted);
+  --table-selection: color-mix(in srgb, var(--ars-red) 12%, transparent);
+
+  --graph-node: var(--ars-ink);
+  --graph-node-focused: var(--ars-red);
+  --graph-node-tag: var(--ars-gold);
+  --graph-node-attachment: var(--ars-muted);
+  --graph-node-unresolved: var(--ars-faint);
+  --graph-line: var(--ars-graph-line);
+  --graph-text: var(--ars-muted);
+}
+
+/* iPhone: всё на ступень меньше */
+.is-phone {
+  --inline-title-size: 3.75em;
+  --h1-size: 2.3em;
+  --h2-size: 2em;
+  --h3-size: 1.56em;
+}
+
+/* ───────────────────────── Лист заметки ───────────────────────── */
+
+/* шум лежит на самом листе, неподвижно и без анимации */
+.workspace-split.mod-root .workspace-leaf-content:is([data-type="markdown"], [data-type="empty"]) .view-content,
+.workspace-leaf-content:is([data-type="markdown"], [data-type="empty"]) .view-content {
+  background-color: var(--ars-page);
+  background-image: var(--ars-grain);
+  background-size: 128px 128px;
+}
+body.ars-no-grain .workspace-leaf-content:is([data-type="markdown"], [data-type="empty"]) .view-content { background-image: none; }
+
+.workspace-leaf-content[data-type="markdown"] .view-content :is(.markdown-source-view, .markdown-reading-view, .markdown-preview-view, .cm-editor, .cm-scroller),
+.workspace-leaf-content.is-read-mode .markdown-preview-view {
+  background-color: transparent;
+}
+
+/* заголовок заметки: готика, под ним всегда бороздка */
+.inline-title:not([data-level]) {
+  letter-spacing: .005em;
+  padding-bottom: .14em;
+  border-bottom: 1px solid var(--ars-p-sh);
+  box-shadow: 0 1px 0 var(--ars-p-hi);
+}
+
+/* H4–H6 — моноширинные капители */
+.markdown-rendered :is(h4, h5, h6),
+.markdown-source-view.mod-cm6 :is(.HyperMD-header-4, .HyperMD-header-5, .HyperMD-header-6) {
+  text-transform: uppercase;
+}
+.markdown-rendered :is(h2, h3) { margin-block-end: .45em; }
+
+/* жирный, курсив, ссылки */
+.markdown-rendered strong, .cm-s-obsidian .cm-strong { font-weight: 700; }
+.markdown-rendered a,
+.cm-s-obsidian :is(.cm-hmd-internal-link, .cm-link, .cm-url) .cm-underline,
+.cm-s-obsidian span.cm-url {
+  text-decoration-color: var(--ars-red);
+  text-decoration-thickness: 1px;
+  text-underline-offset: .22em;
+}
+.markdown-rendered a.is-unresolved { text-decoration-style: dotted; }
+
+/* выделение ==…== — полоса киновари в нижней половине строки */
+.markdown-rendered mark,
+.cm-s-obsidian span.cm-highlight {
+  color: inherit;
+  background-color: transparent;
+  background-image: linear-gradient(transparent 58%, var(--ars-mark) 58%);
+}
+
+/* код — маленькое вдавленное поле */
+.markdown-rendered :not(pre) > code {
+  border: 1px solid;
+  border-color: var(--ars-p-sh) var(--ars-p-hi) var(--ars-p-hi) var(--ars-p-sh);
+  padding: 0 .3em;
+}
+.markdown-rendered pre {
+  border: 2px solid;
+  border-color: var(--ars-p-sh) var(--ars-p-hi) var(--ars-p-hi) var(--ars-p-sh);
+}
+
+/* сноски — номера киноварью */
+.markdown-rendered sup.footnote-ref, .markdown-rendered sup.footnote-ref a,
+.markdown-rendered a.footnote-link, .cm-s-obsidian span.cm-footref {
+  color: var(--ars-red);
+  font-weight: 700;
+  text-decoration: none;
+}
+.markdown-rendered .footnotes { color: var(--ars-muted); font-size: .85em; line-height: 1.5; }
+.markdown-rendered .footnotes ol > li::marker { color: var(--ars-red); font-weight: 700; }
+
+/* ───────────────────────── Разделитель --- : бороздка ───────────────────────── */
+
+.markdown-rendered hr,
+.markdown-source-view.mod-cm6 hr {
+  height: 0;
+  border: none;
+  border-top: 1px solid var(--ars-p-sh);
+  border-bottom: 1px solid var(--ars-p-hi);
+}
+.markdown-rendered hr { margin: 2.2em 0 2em; }
+
+/* ───────────────────────── Буквица ─────────────────────────
+   Одна на заметку: первая буква первого абзаца после первого ручного «---».
+   Режим чтения: блоки заметки — соседние div с классами el-hr, el-p…
+   Режим редактирования: строки редактора .cm-line, пустая строка учтена.
+   Если верх заметки ушёл из экрана и Obsidian его выгрузил, правило молчит. */
+
+.markdown-rendered .markdown-preview-sizer > .mod-header ~ .el-hr:not(.el-hr ~ .el-hr) + .el-p > p {
+  display: flow-root;
+}
+.markdown-rendered .markdown-preview-sizer > .mod-header ~ .el-hr:not(.el-hr ~ .el-hr) + .el-p > p::first-letter,
+.markdown-source-view.mod-cm6 .cm-content > .HyperMD-hr:not(.HyperMD-hr ~ .HyperMD-hr):not(.cm-gap ~ .HyperMD-hr) + .cm-line:not([class*="HyperMD"]):not(:has(> br:only-child))::first-letter,
+.markdown-source-view.mod-cm6 .cm-content > .HyperMD-hr:not(.HyperMD-hr ~ .HyperMD-hr):not(.cm-gap ~ .HyperMD-hr) + .cm-line:has(> br:only-child) + .cm-line:not([class*="HyperMD"])::first-letter {
+  float: left;
+  font-family: var(--ars-gothic);
+  font-weight: 400;
+  font-style: normal;
+  color: var(--ars-red);
+  font-size: 3.25em;
+  line-height: .86;
+  margin: .12em .12em 0 -.02em;
+}
+.markdown-source-view.mod-cm6 .cm-content > .HyperMD-hr:not(.HyperMD-hr ~ .HyperMD-hr):not(.cm-gap ~ .HyperMD-hr) + .cm-line:not([class*="HyperMD"]):not(:has(> br:only-child)),
+.markdown-source-view.mod-cm6 .cm-content > .HyperMD-hr:not(.HyperMD-hr ~ .HyperMD-hr):not(.cm-gap ~ .HyperMD-hr) + .cm-line:has(> br:only-child) + .cm-line:not([class*="HyperMD"]) {
+  display: flow-root;
+}
+/* во встроенных заметках буквиц нет */
+.markdown-embed .markdown-preview-sizer > .el-p > p::first-letter {
+  float: none; font: inherit; color: inherit; margin: 0;
+}
+
+/* ───────────────────────── Списки ───────────────────────── */
+
+/* 1-й уровень — пиксельный крест паттэ киноварью */
+.list-bullet::after,
+.markdown-rendered ul > li > .list-bullet::after,
+.markdown-source-view.mod-cm6 .HyperMD-list-line-1 .list-bullet::after {
+  width: 11px;
+  height: 11px;
+  border-radius: 0;
+  background-color: var(--ars-red);
+  -webkit-mask: var(--ars-cross) center / 11px 11px no-repeat;
+  mask: var(--ars-cross) center / 11px 11px no-repeat;
+}
+/* 2-й — чернильное тире */
+.markdown-rendered :is(ul, ol) ul > li > .list-bullet::after,
+.markdown-source-view.mod-cm6 .HyperMD-list-line-2 .list-bullet::after {
+  width: 8px;
+  height: 1.5px;
+  background-color: var(--ars-ink);
+  -webkit-mask: none;
+  mask: none;
+}
+/* 3-й и глубже — точка */
+.markdown-rendered :is(ul, ol) :is(ul, ol) ul > li > .list-bullet::after,
+.markdown-source-view.mod-cm6 :is(.HyperMD-list-line-3, .HyperMD-list-line-4, .HyperMD-list-line-5, .HyperMD-list-line-6, .HyperMD-list-line-7) .list-bullet::after {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--ars-ink);
+  -webkit-mask: none;
+  mask: none;
+}
+/* номера — киноварью */
+.markdown-rendered ol > li::marker,
+.markdown-source-view.mod-cm6 .cm-formatting-list-ol {
+  color: var(--ars-red);
+  font-weight: 700;
+}
+
+/* ───────────────────────── Чекбоксы ─────────────────────────
+   Вдавленное окошко Win95: поле 9×9 «пикселей» по 2px, галочка 7×7 по центру. */
+
+input[type="checkbox"].task-list-item-checkbox {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 0;
+  background-color: var(--ars-p-box);
+  border: 2px solid;
+  border-color: var(--ars-p-sh) var(--ars-p-hi) var(--ars-p-hi) var(--ars-p-sh);
+  box-shadow: none;
+  filter: none;
+}
+input[type="checkbox"].task-list-item-checkbox:checked {
+  background-color: var(--ars-p-box);
+  border-color: var(--ars-p-sh) var(--ars-p-hi) var(--ars-p-hi) var(--ars-p-sh);
+}
+input[type="checkbox"].task-list-item-checkbox:checked::after {
+  top: 0;
+  left: 0;
+  inset-inline-start: 0;
+  width: 18px;
+  height: 18px;
+  background-color: var(--ars-ink);
+  -webkit-mask: var(--ars-check) 2px 2px / 14px 14px no-repeat;
+  mask: var(--ars-check) 2px 2px / 14px 14px no-repeat;
+}
+
+/* ───────────────────────── Цитата > — врезка ───────────────────────── */
+
+.markdown-rendered blockquote {
+  margin: 2em 0;
+  padding: 1.1em 0 1em;
+  border: none;
+  border-top: 1px solid var(--ars-p-sh);
+  border-bottom: 1px solid var(--ars-p-sh);
+  box-shadow: inset 0 1px 0 var(--ars-p-hi), inset 0 -1px 0 var(--ars-p-hi);
+  text-align: center;
+  font-family: var(--ars-gothic);
+  font-size: 1.3em;
+  line-height: 1.28;
+  font-style: normal;
+}
+.markdown-rendered blockquote > p { max-width: 24ch; margin-inline: auto; }
+.markdown-rendered blockquote > p:last-child { margin-bottom: 0; }
+.is-phone .markdown-rendered blockquote { font-size: 1.15em; }
+
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote {
+  font-family: var(--ars-gothic);
+  font-size: 1.3em;
+  line-height: 1.28;
+  text-align: center;
+}
+.is-phone .markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote { font-size: 1.15em; }
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote::before,
+.markdown-source-view.mod-cm6 .cm-blockquote-border::before { display: none; }
+.markdown-source-view.mod-cm6.is-live-preview .cm-line:not(.HyperMD-quote) + .HyperMD-quote,
+.markdown-source-view.mod-cm6.is-live-preview .cm-content > .HyperMD-quote:first-child {
+  padding-top: .9em;
+  border-top: 1px solid var(--ars-p-sh);
+  box-shadow: inset 0 1px 0 var(--ars-p-hi);
+}
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote:not(:has(+ .HyperMD-quote)) {
+  padding-bottom: .8em;
+  border-bottom: 1px solid var(--ars-p-sh);
+  box-shadow: inset 0 -1px 0 var(--ars-p-hi);
+}
+.markdown-source-view.mod-cm6.is-live-preview .cm-line:not(.HyperMD-quote) + .HyperMD-quote:not(:has(+ .HyperMD-quote)) {
+  box-shadow: inset 0 1px 0 var(--ars-p-hi), inset 0 -1px 0 var(--ars-p-hi);
+}
+
+/* ───────────────────────── Таблицы: книжные линейки ───────────────────────── */
+
+:is(.markdown-rendered, .markdown-source-view.mod-cm6) table { border-collapse: collapse; }
+.markdown-rendered table { width: 100%; }
+:is(.markdown-rendered, .markdown-source-view.mod-cm6) :is(th, td) {
+  border: none;
+  padding: .5em .9em .45em 0;
+}
+:is(.markdown-rendered, .markdown-source-view.mod-cm6) th {
+  text-align: start;
+  font-size: .72em;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ars-muted);
+  border-bottom: 1px solid var(--ars-p-sh);
+  box-shadow: 0 1px 0 var(--ars-p-hi);
+}
+:is(.markdown-rendered, .markdown-source-view.mod-cm6) td {
+  color: var(--ars-ink);
+  border-bottom: 1px solid var(--ars-p-mid);
+}
+:is(.markdown-rendered, .markdown-source-view.mod-cm6) tbody tr:last-child td { border-bottom-color: var(--ars-p-sh); }
+:is(.markdown-rendered, .markdown-source-view.mod-cm6) td:first-child { color: var(--ars-red); font-weight: 700; }
+
+/* ───────────────────────── Выноски: вдавленная панель ───────────────────────── */
+
+.callout {
+  background-color: var(--ars-p-well);
+  border: 2px solid;
+  border-color: var(--ars-p-sh) var(--ars-p-hi) var(--ars-p-hi) var(--ars-p-sh);
+  border-radius: 0;
+  mix-blend-mode: normal;
+  padding: .75em 1em .8em;
+}
+.callout-title {
+  align-items: center;
+  font-size: .72em;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.callout-icon .svg-icon { width: 14px; height: 14px; }
+.callout-content { color: var(--ars-ink); padding: 0; }
+.callout-content > :first-child { margin-top: .3em; }
+.callout-content > :last-child { margin-bottom: 0; }
+.callout:is([data-callout="quote"], [data-callout="cite"]) > .callout-content {
+  font-family: var(--ars-gothic);
+  font-size: 1.25em;
+  line-height: 1.3;
+}
+
+/* встроенные заметки ![[…]] — такая же вдавленная панель */
+.markdown-rendered .markdown-embed,
+.markdown-source-view.mod-cm6 .markdown-embed {
+  background-color: var(--ars-p-well);
+  border: 2px solid;
+  border-color: var(--ars-p-sh) var(--ars-p-hi) var(--ars-p-hi) var(--ars-p-sh);
+  padding: .6em 1em;
+}
+
+/* ───────────────────────── Картинки: вклейка-гравюра ─────────────────────────
+   По центру, тонкая двойная рамка. Подпись — текст после черты:
+   ![[картинка.jpg|Rubedo.exe]] → «ИЛЛ. RUBEDO.EXE». */
+
+:is(.markdown-rendered, .markdown-source-view.mod-cm6) .internal-embed.image-embed {
+  display: grid;
+  grid-template-columns: 1fr auto auto 1fr;
+  justify-items: center;
+  margin: 1.6em 0 1.8em;
+}
+:is(.markdown-rendered, .markdown-source-view.mod-cm6) .internal-embed.image-embed > :is(img, .image-wrapper) {
+  grid-column: 1 / -1;
+  max-width: 78%;
+}
+:is(.markdown-rendered, .markdown-source-view.mod-cm6) .internal-embed.image-embed img {
+  padding: 7px;
+  border: 1px solid var(--ars-p-sh);
+  border-radius: 0;
+  background-color: var(--ars-page);
+  box-shadow: inset 0 0 0 3px var(--ars-page), inset 0 0 0 4px var(--ars-p-sh);
+}
+:is(.markdown-rendered, .markdown-source-view.mod-cm6) .internal-embed.image-embed .image-wrapper img { max-width: 100%; }
+:is(.markdown-rendered, .markdown-source-view.mod-cm6) .internal-embed.image-embed[alt]:not([alt=""]):not([alt$=".png" i]):not([alt$=".jpg" i]):not([alt$=".jpeg" i]):not([alt$=".webp" i]):not([alt$=".gif" i]):not([alt$=".svg" i]):not([alt$=".heic" i]):not([alt$=".avif" i]):not([alt$=".bmp" i])::before,
+:is(.markdown-rendered, .markdown-source-view.mod-cm6) .internal-embed.image-embed[alt]:not([alt=""]):not([alt$=".png" i]):not([alt$=".jpg" i]):not([alt$=".jpeg" i]):not([alt$=".webp" i]):not([alt$=".gif" i]):not([alt$=".svg" i]):not([alt$=".heic" i]):not([alt$=".avif" i]):not([alt$=".bmp" i])::after {
+  grid-row: 2;
+  margin-top: .7em;
+  font-family: var(--ars-mono);
+  font-size: .72em;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+:is(.markdown-rendered, .markdown-source-view.mod-cm6) .internal-embed.image-embed[alt]:not([alt=""]):not([alt$=".png" i]):not([alt$=".jpg" i]):not([alt$=".jpeg" i]):not([alt$=".webp" i]):not([alt$=".gif" i]):not([alt$=".svg" i]):not([alt$=".heic" i]):not([alt$=".avif" i]):not([alt$=".bmp" i])::before {
+  content: "Илл.";
+  grid-column: 2;
+  color: var(--ars-red);
+  margin-inline-end: .9em;
+}
+:is(.markdown-rendered, .markdown-source-view.mod-cm6) .internal-embed.image-embed[alt]:not([alt=""]):not([alt$=".png" i]):not([alt$=".jpg" i]):not([alt$=".jpeg" i]):not([alt$=".webp" i]):not([alt$=".gif" i]):not([alt$=".svg" i]):not([alt$=".heic" i]):not([alt$=".avif" i]):not([alt$=".bmp" i])::after {
+  content: attr(alt);
+  grid-column: 3;
+  color: var(--ars-muted);
+}
+
+/* ───────────────────────── Свойства заметки ───────────────────────── */
+
+.metadata-container {
+  --metadata-label-font-size: .72em;
+  --metadata-input-font-size: .8em;
+  --metadata-label-text-color: var(--ars-muted);
+  margin-bottom: 1.4em;
+}
+.is-phone .metadata-content {
+  background-color: var(--ars-p-well);
+  border: 2px solid;
+  border-color: var(--ars-p-sh) var(--ars-p-hi) var(--ars-p-hi) var(--ars-p-sh);
+}
+.metadata-property-key-input,
+.metadata-properties-heading .metadata-properties-title {
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-weight: 700;
+}
+
+/* ───────────────────────── Выделение текста ───────────────────────── */
+
+::selection { background-color: var(--ars-select); }
+
+/* ───────────────────────── Рамка «Проводника» ───────────────────────── */
+
+.workspace-ribbon {
+  background-color: var(--ars-face);
+  border-inline-end: 1px solid var(--ars-mid);
+}
+.workspace-split.mod-left-split { box-shadow: inset -1px 0 0 var(--ars-hi); }
+.workspace-split.mod-right-split { box-shadow: inset 1px 0 0 var(--ars-hi); }
+
+/* кнопки над деревом — выпуклые */
+.nav-buttons-container .clickable-icon.nav-action-button,
+.workspace-tab-header-new-tab .clickable-icon,
+.workspace-tab-header-tab-list .clickable-icon {
+  background-color: var(--ars-face);
+  border: 2px solid;
+  border-color: var(--ars-hi) var(--ars-sh) var(--ars-sh) var(--ars-hi);
+  box-shadow: inset -1px -1px 0 var(--ars-mid);
+  border-radius: 0;
+  margin: 0 1px;
+}
+.nav-buttons-container .clickable-icon.nav-action-button.is-active,
+.nav-buttons-container .clickable-icon.nav-action-button:active {
+  background-color: var(--ars-well);
+  border-color: var(--ars-sh) var(--ars-hi) var(--ars-hi) var(--ars-sh);
+  box-shadow: inset 1px 1px 0 var(--ars-mid);
+}
+
+/* открытая заметка в дереве — тёмная плашка с пунктиром, как в Win95 */
+.tree-item-self.is-active,
+.tree-item-self.is-selected { background-color: transparent; }
+.tree-item-self:is(.is-active, .is-selected) > .tree-item-inner {
+  background-color: var(--ars-bar);
+  color: var(--ars-bar-text);
+  outline: 1px dotted var(--ars-bar-text);
+  outline-offset: -2px;
+  padding: 0 4px;
+  margin-inline-start: -4px;
+}
+
+/* папки Win95 в нашей гамме: светлая тема — пергамент, тёмная — умбра */
+.nav-folder-title-content:not([contenteditable="true"])::before,
+.nav-file-title-content:not([contenteditable="true"])::before {
+  content: "";
+  display: inline-block;
+  width: 17px;
+  height: 15px;
+  margin-inline-end: 7px;
+  vertical-align: -2px;
+  background: var(--ars-folder) center / contain no-repeat;
+}
+.nav-folder:not(.is-collapsed) > .nav-folder-title > .nav-folder-title-content:not([contenteditable="true"])::before {
+  background-image: var(--ars-folder-open);
+}
+.nav-file-title-content:not([contenteditable="true"])::before {
+  width: 14px;
+  background-image: var(--ars-note);
+}
+.tree-item-self:has(.iconize-icon) .tree-item-inner::before { display: none; }
+
+/* ───────────────────────── Вкладки: отдельные кнопки ───────────────────────── */
+
+.workspace-tab-header-container { border-bottom: none; }
+.workspace .mod-root .workspace-tab-header-container .workspace-tab-header {
+  margin: 5px 2px;
+  padding: 0;
+  background-color: var(--ars-face);
+  border: 2px solid;
+  border-color: var(--ars-hi) var(--ars-sh) var(--ars-sh) var(--ars-hi);
+  box-shadow: inset -1px -1px 0 var(--ars-mid);
+  border-radius: 0;
+}
+.workspace .mod-root .workspace-tab-header-container .workspace-tab-header.is-active {
+  background-color: var(--ars-well);
+  border-color: var(--ars-sh) var(--ars-hi) var(--ars-hi) var(--ars-sh);
+  box-shadow: inset 1px 1px 0 var(--ars-mid);
+}
+.workspace .mod-root .workspace-tab-header-container .workspace-tab-header.is-active .workspace-tab-header-inner-title { font-weight: 700; }
+.workspace-split.mod-root .workspace-tab-header-container .workspace-tab-header.is-active::before,
+.workspace-split.mod-root .workspace-tab-header-container .workspace-tab-header.is-active::after { display: none; }
+.workspace-tab-header-inner { background-color: transparent !important; border-radius: 0; }
+.workspace-tab-header-inner::after { display: none; }
+.workspace .mod-root .workspace-tab-header:not(.is-active) .workspace-tab-header-inner-close-button { display: none; }
+/* вкладки боковых панелей: открытая — вдавлена */
+.mod-sidedock .workspace-tab-header.is-active {
+  background-color: var(--ars-well);
+  box-shadow: inset 1px 1px 0 var(--ars-sh), inset -1px -1px 0 var(--ars-hi);
+}
+
+/* ───────────────────────── Шапка заметки: поле с путём ───────────────────────── */
+
+.view-header {
+  background-color: var(--ars-face);
+  border-bottom: 1px solid var(--ars-sh);
+}
+.view-header-title-container {
+  align-self: center;
+  height: auto;
+  min-height: 28px;
+  margin: 0 6px;
+  padding: 2px 8px;
+  justify-content: center;
+  background-color: var(--ars-well);
+  border: 2px solid;
+  border-color: var(--ars-sh) var(--ars-hi) var(--ars-hi) var(--ars-sh);
+}
+.is-mobile .view-header-title-container { height: auto; }
+.view-header-title-container::after { display: none; }
+.view-header-title { color: var(--ars-chrome-text); font-weight: 700; }
+.view-header-title-parent, .view-header-breadcrumb, .view-header-breadcrumb-separator { color: var(--ars-chrome-muted); }
+
+/* ───────────────────────── Пустой экран: логотип ───────────────────────── */
+
+/* у «неизвестных» вкладок (плагин не загружен) заголовок с пояснением остаётся */
+.empty-state-container:not(:has(.mod-unknown)) > .empty-state-title { display: none; }
+.empty-state-container:not(:has(.mod-unknown))::before {
+  content: "";
+  display: block;
+  width: min(420px, 78vw);
+  aspect-ratio: 760 / 279;
+  margin: 0 auto 30px;
+  background: var(--ars-logo) center / contain no-repeat;
+}
+.empty-state .empty-state-action-list {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  max-width: 460px;
+}
+.empty-state .empty-state-action-list > .text-icon-button.mod-pill {
+  width: auto;
+  padding: 6px 14px;
+  background-color: var(--ars-win);
+  color: var(--ars-ink);
+  border: 2px solid;
+  border-color: var(--ars-win-hi) var(--ars-win-sh) var(--ars-win-sh) var(--ars-win-hi);
+  box-shadow: inset -1px -1px 0 var(--ars-win-mid);
+  border-radius: 0;
+}
+.empty-state .empty-state-action-list > .text-icon-button.mod-pill:active {
+  border-color: var(--ars-win-sh) var(--ars-win-hi) var(--ars-win-hi) var(--ars-win-sh);
+  box-shadow: inset 1px 1px 0 var(--ars-win-mid);
+}
+
+/* ───────────────────────── Диалоги «Гримуар» ─────────────────────────
+   Окна выпуклые, без шапки; название окна готикой, под ним бороздка. */
+
+.modal, .prompt, .menu, .suggestion-container, .popover.hover-popover, .notice {
+  background-color: var(--ars-win);
+  color: var(--ars-ink);
+  border: 2px solid;
+  border-color: var(--ars-win-hi) var(--ars-win-sh) var(--ars-win-sh) var(--ars-win-hi);
+  box-shadow: 1px 1px 0 var(--ars-win-sh), inset -1px -1px 0 var(--ars-win-mid);
+  border-radius: 0;
+  backdrop-filter: none;
+}
+.is-mobile .prompt, .is-phone .prompt { background-color: var(--ars-win); }
+.popover.hover-popover { background-color: var(--ars-page); }
+
+.modal-title {
+  font-family: var(--ars-gothic);
+  font-size: 1.7em;
+  font-weight: 400;
+  line-height: 1.1;
+  padding-bottom: .25em;
+  margin-bottom: .55em;
+  border-bottom: 1px solid var(--ars-win-sh);
+  box-shadow: 0 1px 0 var(--ars-win-hi);
+}
+.is-phone .modal-title { font-size: 1.4em; }
+
+/* крестик закрытия убран у небольших окон на iPad: их закрывает касание мимо окна.
+   У настроек и полноэкранных окон iPhone он остаётся. */
+body:not(.is-phone) .modal:not(.mod-settings):not(.mod-community-modal):not(.mod-sidebar-layout):not(.lightbox) > .modal-close-button { display: none; }
+
+/* поля ввода — вдавлены */
+:is(.modal, .prompt, .search-input-container, .document-search-container, .setting-item-control) :is(input[type="text"], input[type="search"], input[type="number"], input[type="email"], input[type="password"], input[type="url"], textarea),
+.prompt-input-container input.prompt-input {
+  background-color: var(--ars-field);
+  color: var(--ars-ink);
+  border: 2px solid;
+  border-color: var(--ars-win-sh) var(--ars-win-hi) var(--ars-win-hi) var(--ars-win-sh);
+  border-radius: 0;
+  box-shadow: none;
+}
+.prompt-input-container { padding: 8px 8px 0; }
+.prompt-results {
+  margin: 8px;
+  padding: 2px;
+  background-color: var(--ars-field);
+  border: 2px solid;
+  border-color: var(--ars-win-sh) var(--ars-win-hi) var(--ars-win-hi) var(--ars-win-sh);
+}
+
+/* выбранный пункт — вдавлен, как нажатая кнопка */
+.suggestion-item { border-radius: 0; }
+.suggestion-item.is-selected,
+.suggestion-item.mobile-tap {
+  background-color: var(--ars-win);
+  box-shadow: inset 1px 1px 0 var(--ars-win-sh), inset -1px -1px 0 var(--ars-win-hi);
+  font-weight: 700;
+}
+.suggestion-highlight { color: var(--ars-red); font-weight: 700; }
+.suggestion-hotkey, .prompt-instructions { color: var(--ars-muted); }
+.suggestion-item .suggestion-hotkey, .suggestion-item .suggestion-hotkey kbd {
+  background: none;
+  border: none;
+  box-shadow: none;
+  color: var(--ars-muted);
+}
+
+/* меню */
+.menu-item { border-radius: 0; }
+.menu-item.selected:not(.is-disabled):not(.is-label) {
+  background-color: var(--ars-field);
+  box-shadow: inset 1px 1px 0 var(--ars-win-sh), inset -1px -1px 0 var(--ars-win-hi);
+  font-weight: 700;
+}
+.menu-separator {
+  height: 0;
+  border-top: 1px solid var(--ars-win-mid);
+  border-bottom: 1px solid var(--ars-win-hi);
+  margin: 3px 2px;
+}
+.menu-item.is-warning:not(.is-disabled), .menu-item.is-warning .menu-item-icon { color: var(--ars-red); }
+
+/* кнопки в окнах — выпуклые; основная — жирная с рамкой */
+:is(.modal, .prompt, .notice) button:not(.clickable-icon) {
+  background-color: var(--ars-win);
+  color: var(--ars-ink);
+  border: 2px solid;
+  border-color: var(--ars-win-hi) var(--ars-win-sh) var(--ars-win-sh) var(--ars-win-hi);
+  box-shadow: inset -1px -1px 0 var(--ars-win-mid);
+  border-radius: 0;
+}
+:is(.modal, .prompt, .notice) button:not(.clickable-icon):active {
+  border-color: var(--ars-win-sh) var(--ars-win-hi) var(--ars-win-hi) var(--ars-win-sh);
+  box-shadow: inset 1px 1px 0 var(--ars-win-mid);
+}
+:is(.modal, .prompt) button.mod-cta {
+  font-weight: 700;
+  outline: 1px solid var(--ars-win-sh);
+  outline-offset: 0;
+}
+:is(.modal, .prompt) button.mod-warning { color: var(--ars-red); }
+
+/* переключатели в настройках */
+.checkbox-container {
+  background-color: var(--ars-field);
+  box-shadow: inset 1px 1px 0 var(--ars-win-sh), inset -1px -1px 0 var(--ars-win-hi);
+}
+.checkbox-container.is-enabled { background-color: var(--ars-red); }
+.checkbox-container::after {
+  background-color: var(--ars-win);
+  box-shadow: inset 1px 1px 0 var(--ars-win-hi), inset -1px -1px 0 var(--ars-win-sh);
+}
+
+/* ───────────────────────── iPhone и iPad ───────────────────────── */
+
+/* нижняя панель iPhone — выпуклые кнопки */
+.mobile-navbar {
+  background-color: var(--ars-face);
+  border-top: 2px solid var(--ars-hi);
+  box-shadow: 0 -1px 0 var(--ars-sh);
+}
+.mobile-navbar-action :is(.clickable-icon, button) {
+  height: calc(100% - 10px);
+  margin: 5px 3px;
+  background-color: var(--ars-face);
+  border: 2px solid;
+  border-color: var(--ars-hi) var(--ars-sh) var(--ars-sh) var(--ars-hi);
+  box-shadow: inset -1px -1px 0 var(--ars-mid);
+  border-radius: 0;
+}
+.mobile-navbar-action.mobile-tap :is(.clickable-icon, button) {
+  background-color: var(--ars-well);
+  border-color: var(--ars-sh) var(--ars-hi) var(--ars-hi) var(--ars-sh);
+  box-shadow: inset 1px 1px 0 var(--ars-mid);
+}
+
+/* панель над клавиатурой */
+.mobile-toolbar-options-list,
+.mobile-toolbar-floating-options {
+  background-color: var(--ars-face);
+  border: 2px solid;
+  border-color: var(--ars-hi) var(--ars-sh) var(--ars-sh) var(--ars-hi);
+  border-radius: 0;
+  box-shadow: none;
+}
+.mobile-toolbar-option {
+  margin: 3px 1px;
+  border: 2px solid;
+  border-color: var(--ars-hi) var(--ars-sh) var(--ars-sh) var(--ars-hi);
+  background-color: var(--ars-face);
+  border-radius: 0;
+}
+.mobile-toolbar-option.mobile-tap {
+  background-color: var(--ars-well);
+  border-color: var(--ars-sh) var(--ars-hi) var(--ars-hi) var(--ars-sh);
+}
+
+/* выезжающие панели */
+.workspace-drawer {
+  background-color: var(--ars-face);
+  border-radius: 0;
+}
+.workspace-drawer.mod-left { border-inline-end: 2px solid var(--ars-sh); box-shadow: inset -1px 0 0 var(--ars-hi); }
+.workspace-drawer.mod-right { border-inline-start: 2px solid var(--ars-sh); box-shadow: inset 1px 0 0 var(--ars-hi); }
+
+/* ───────────────────────── Граф: звёздная карта ───────────────────────── */
+
+.workspace-leaf-content:is([data-type="graph"], [data-type="localgraph"]) .view-content {
+  background-color: var(--ars-page);
+  background-image:
+    var(--ars-grain),
+    repeating-radial-gradient(circle at 50% 50%, transparent 0 89px, var(--ars-grid) 89px 90px),
+    repeating-conic-gradient(from 0deg at 50% 50%, var(--ars-grid) 0deg .2deg, transparent .2deg 15deg);
+  background-size: 128px 128px, auto, auto;
+}
+body.ars-no-grain .workspace-leaf-content:is([data-type="graph"], [data-type="localgraph"]) .view-content {
+  background-image:
+    repeating-radial-gradient(circle at 50% 50%, transparent 0 89px, var(--ars-grid) 89px 90px),
+    repeating-conic-gradient(from 0deg at 50% 50%, var(--ars-grid) 0deg .2deg, transparent .2deg 15deg);
+  background-size: auto, auto;
+}

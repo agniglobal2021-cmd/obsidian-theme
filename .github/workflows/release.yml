@@ -1,0 +1,43 @@
+# Кнопка «Run workflow» во вкладке Actions. Проверяет, что theme.css собран из src,
+# и выпускает релиз с версией из manifest.json и файлами theme.css и manifest.json.
+name: Выпустить релиз
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Сверить номера версий
+        run: |
+          python3 -c 'import json; m = json.load(open("manifest.json")); v = json.load(open("versions.json")); ok = v.get(m["version"]) == m["minAppVersion"]; print("versions ok" if ok else "versions.json: нет " + m["version"] + ": " + m["minAppVersion"]); raise SystemExit(0 if ok else 1)'
+
+      - name: Проверить, что theme.css собран из src
+        run: |
+          python3 src/build.py
+          if ! git diff --quiet -- theme.css; then
+            echo "::error::theme.css не совпадает с src/theme.src.css. Запусти python3 src/build.py и закоммить theme.css."
+            exit 1
+          fi
+
+      - name: Выпустить релиз
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(python3 -c 'import json; print(json.load(open("manifest.json"))["version"])')
+          if gh release view "$version" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            echo "::error::Релиз $version уже есть. Подними версию в manifest.json и versions.json."
+            exit 1
+          fi
+          awk -v head="## $version" '$0 == head { on = 1; next } /^## / { on = 0 } on' CHANGELOG.md > notes.md
+          [ -s notes.md ] || echo "Версия $version." > notes.md
+          gh release create "$version" theme.css manifest.json \
+            --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "$version" --notes-file notes.md
