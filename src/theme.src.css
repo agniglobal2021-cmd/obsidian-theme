@@ -17,7 +17,12 @@ settings:
     -
         id: ars-no-grain
         title: Без шума на листе
-        description: Убрать статичный шум с листа заметки
+        description: Убрать шум с листа заметки
+        type: class-toggle
+    -
+        id: ars-grain-still
+        title: Неподвижный шум
+        description: Шум остаётся, но не мерцает — бережёт батарею
         type: class-toggle
 */
 
@@ -67,7 +72,6 @@ body {
   --font-interface-theme: var(--ars-mono);
   --font-monospace-theme: var(--ars-mono);
   --line-height-normal: 1.68;
-  --file-line-width: 66ch;
   --p-spacing: 1em;
   --heading-spacing: 1.5em;
   --bold-weight: 700;
@@ -75,16 +79,17 @@ body {
 
   /* заголовки: H1–H3 готикой, H4–H6 моноширинными капителями */
   --inline-title-font: var(--ars-gothic);
-  --inline-title-size: 4.7em;
+  --inline-title-size: 3.6em;
   --inline-title-weight: 400;
-  --inline-title-line-height: 1;
+  --inline-title-line-height: 1.1;
   --inline-title-margin-bottom: .3em;
-  --h1-font: var(--ars-gothic); --h1-size: 2.75em; --h1-weight: 400; --h1-line-height: 1.05; --h1-letter-spacing: .005em;
-  --h2-font: var(--ars-gothic); --h2-size: 2.24em; --h2-weight: 400; --h2-line-height: 1.08; --h2-letter-spacing: .005em;
-  --h3-font: var(--ars-gothic); --h3-size: 1.65em; --h3-weight: 400; --h3-line-height: 1.1;  --h3-letter-spacing: .005em;
-  --h4-font: var(--ars-mono); --h4-size: .74em; --h4-weight: 700; --h4-line-height: 1.5; --h4-letter-spacing: .18em; --h4-color: var(--ars-red);
-  --h5-font: var(--ars-mono); --h5-size: .72em; --h5-weight: 700; --h5-line-height: 1.5; --h5-letter-spacing: .16em; --h5-color: var(--text-muted);
-  --h6-font: var(--ars-mono); --h6-size: .7em;  --h6-weight: 400; --h6-line-height: 1.5; --h6-letter-spacing: .16em; --h6-color: var(--text-muted);
+  --inline-title-color: var(--ars-red);
+  --h1-font: var(--ars-gothic); --h1-size: 2.3em;  --h1-weight: 400; --h1-line-height: 1.1;  --h1-letter-spacing: .005em;
+  --h2-font: var(--ars-gothic); --h2-size: 1.7em;  --h2-weight: 400; --h2-line-height: 1.15; --h2-letter-spacing: .005em;
+  --h3-font: var(--ars-mono);   --h3-size: 1.12em; --h3-weight: 700; --h3-line-height: 1.4;  --h3-letter-spacing: 0;
+  --h4-font: var(--ars-mono);   --h4-size: .78em;  --h4-weight: 700; --h4-line-height: 1.5;  --h4-letter-spacing: .16em; --h4-color: var(--ars-red);
+  --h5-font: var(--ars-mono);   --h5-size: .74em;  --h5-weight: 700; --h5-line-height: 1.5;  --h5-letter-spacing: .14em; --h5-color: var(--text-muted);
+  --h6-font: var(--ars-mono);   --h6-size: .74em;  --h6-weight: 400; --h6-line-height: 1.5;  --h6-letter-spacing: .14em; --h6-color: var(--text-muted);
 
   /* Win95: прямые углы везде */
   --radius-s: 0; --radius-m: 0; --radius-l: 0; --radius-xl: 0;
@@ -362,15 +367,15 @@ body {
 
 /* iPhone: всё на ступень меньше */
 .is-phone {
-  --inline-title-size: 3.75em;
-  --h1-size: 2.3em;
-  --h2-size: 2em;
-  --h3-size: 1.56em;
+  --inline-title-size: 3em;
+  --h1-size: 2em;
+  --h2-size: 1.5em;
+  --h3-size: 1.08em;
 }
 
 /* ───────────────────────── Лист заметки ───────────────────────── */
 
-/* шум лежит на самом листе, неподвижно и без анимации */
+/* шум на листе. Старые движки получают его неподвижным фоном */
 .workspace-split.mod-root .workspace-leaf-content:is([data-type="markdown"], [data-type="empty"]) .view-content,
 .workspace-leaf-content:is([data-type="markdown"], [data-type="empty"]) .view-content {
   background-color: var(--ars-page);
@@ -378,6 +383,47 @@ body {
   background-size: 128px 128px;
 }
 body.ars-no-grain .workspace-leaf-content:is([data-type="markdown"], [data-type="empty"]) .view-content { background-image: none; }
+
+/* мерцающий шум, как на noeasy.xyz: слой с шумом лежит под текстом и десять раз в секунду
+   прыгает на новое место. Двигает слой видеокарта — процессор не перерисовывает лист.
+   Слой больше листа на одну плитку (128px) с каждой стороны; overflow: clip обрезает края
+   и не даёт листу прокручиваться. При «Уменьшении движения» в iOS шум стоит на месте */
+@supports (overflow: clip) {
+  .workspace-split.mod-root .workspace-leaf-content:is([data-type="markdown"], [data-type="empty"]) .view-content,
+  .workspace-leaf-content:is([data-type="markdown"], [data-type="empty"]) .view-content {
+    background-image: none;
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+  }
+  .workspace-leaf-content:is([data-type="markdown"], [data-type="empty"]) .view-content::before {
+    content: "";
+    position: absolute;
+    inset: -128px;
+    z-index: -1;
+    pointer-events: none;
+    background: var(--ars-grain) 0 0 / 128px 128px repeat;
+    will-change: transform;
+    animation: ars-grain 1s steps(1, end) infinite;
+  }
+  body.ars-grain-still .workspace-leaf-content:is([data-type="markdown"], [data-type="empty"]) .view-content::before { animation: none; }
+  body.ars-no-grain .workspace-leaf-content:is([data-type="markdown"], [data-type="empty"]) .view-content::before { display: none; }
+}
+@keyframes ars-grain {
+  0%   { transform: translate3d(0, 0, 0); }
+  10%  { transform: translate3d(-61px, 37px, 0); }
+  20%  { transform: translate3d(83px, -112px, 0); }
+  30%  { transform: translate3d(-124px, -29px, 0); }
+  40%  { transform: translate3d(27px, 109px, 0); }
+  50%  { transform: translate3d(-97px, 88px, 0); }
+  60%  { transform: translate3d(122px, 64px, 0); }
+  70%  { transform: translate3d(-18px, -117px, 0); }
+  80%  { transform: translate3d(106px, -71px, 0); }
+  90%  { transform: translate3d(-119px, 124px, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .workspace-leaf-content:is([data-type="markdown"], [data-type="empty"]) .view-content::before { animation: none; }
+}
 
 .workspace-leaf-content[data-type="markdown"] .view-content :is(.markdown-source-view, .markdown-reading-view, .markdown-preview-view, .cm-editor, .cm-scroller),
 .workspace-leaf-content.is-read-mode .markdown-preview-view {
@@ -387,9 +433,16 @@ body.ars-no-grain .workspace-leaf-content:is([data-type="markdown"], [data-type=
 /* заголовок заметки: готика, под ним всегда бороздка */
 .inline-title:not([data-level]) {
   letter-spacing: .005em;
-  padding-bottom: .14em;
+  padding-bottom: .12em;
   border-bottom: 1px solid var(--ars-p-sh);
   box-shadow: 0 1px 0 var(--ars-p-hi);
+}
+
+/* готика — только заголовок заметки, H1 и H2; шире пробелы между словами, чтобы длинные заголовки читались */
+.inline-title:not([data-level]),
+.markdown-rendered :is(h1, h2),
+.markdown-source-view.mod-cm6 :is(.HyperMD-header-1, .HyperMD-header-2) {
+  word-spacing: .14em;
 }
 
 /* H4–H6 — моноширинные капители */
@@ -475,6 +528,11 @@ body.ars-no-grain .workspace-leaf-content:is([data-type="markdown"], [data-type=
 .markdown-source-view.mod-cm6 .cm-content > .HyperMD-hr:not(.HyperMD-hr ~ .HyperMD-hr):not(.cm-gap ~ .HyperMD-hr) + .cm-line:has(> br:only-child) + .cm-line:not([class*="HyperMD"]) {
   display: flow-root;
 }
+/* если сразу под заголовком заметки стоит мой первый «---» без свойств между ними,
+   вторая бороздка подряд не нужна: прячем линию, буквица остаётся */
+.markdown-rendered .markdown-preview-sizer > .mod-header:not(:has(.metadata-property)) + .el-hr > hr { display: none; }
+.markdown-source-view.mod-cm6 .cm-sizer:not(:has(.metadata-property)) .cm-content > .HyperMD-hr:first-child hr { visibility: hidden; }
+
 /* во встроенных заметках буквиц нет */
 .markdown-embed .markdown-preview-sizer > .el-p > p::first-letter {
   float: none; font: inherit; color: inherit; margin: 0;
@@ -516,7 +574,7 @@ body.ars-no-grain .workspace-leaf-content:is([data-type="markdown"], [data-type=
 .markdown-rendered ol > li::marker,
 .markdown-source-view.mod-cm6 .cm-formatting-list-ol {
   color: var(--ars-red);
-  font-weight: 700;
+  font-weight: 400;
 }
 
 /* ───────────────────────── Чекбоксы ─────────────────────────
@@ -559,22 +617,23 @@ input[type="checkbox"].task-list-item-checkbox:checked::after {
   border-bottom: 1px solid var(--ars-p-sh);
   box-shadow: inset 0 1px 0 var(--ars-p-hi), inset 0 -1px 0 var(--ars-p-hi);
   text-align: center;
-  font-family: var(--ars-gothic);
-  font-size: 1.3em;
-  line-height: 1.28;
-  font-style: normal;
+  font-family: var(--ars-mono);
+  font-size: 1.05em;
+  line-height: 1.6;
+  font-style: italic;
 }
-.markdown-rendered blockquote > p { max-width: 24ch; margin-inline: auto; }
+.markdown-rendered blockquote > p { max-width: 46ch; margin-inline: auto; }
 .markdown-rendered blockquote > p:last-child { margin-bottom: 0; }
-.is-phone .markdown-rendered blockquote { font-size: 1.15em; }
+.markdown-rendered blockquote > :is(ul, ol, pre, table, .callout) { text-align: start; }
 
 .markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote {
-  font-family: var(--ars-gothic);
-  font-size: 1.3em;
-  line-height: 1.28;
+  font-family: var(--ars-mono);
+  font-size: 1.05em;
+  line-height: 1.6;
+  font-style: italic;
   text-align: center;
+  padding-inline: max(0px, (100% - 46ch) / 2);
 }
-.is-phone .markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote { font-size: 1.15em; }
 .markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote::before,
 .markdown-source-view.mod-cm6 .cm-blockquote-border::before { display: none; }
 .markdown-source-view.mod-cm6.is-live-preview .cm-line:not(.HyperMD-quote) + .HyperMD-quote,
@@ -615,23 +674,23 @@ input[type="checkbox"].task-list-item-checkbox:checked::after {
   border-bottom: 1px solid var(--ars-p-mid);
 }
 :is(.markdown-rendered, .markdown-source-view.mod-cm6) tbody tr:last-child td { border-bottom-color: var(--ars-p-sh); }
-:is(.markdown-rendered, .markdown-source-view.mod-cm6) td:first-child { color: var(--ars-red); font-weight: 700; }
+:is(.markdown-rendered, .markdown-source-view.mod-cm6) td:first-child { color: var(--ars-red); }
 
 /* ───────────────────────── Выноски: вдавленная панель ───────────────────────── */
 
 .callout {
-  background-color: var(--ars-p-well);
-  border: 2px solid;
+  background-color: color-mix(in srgb, var(--ars-p-well) 55%, var(--ars-page));
+  border: 1px solid;
   border-color: var(--ars-p-sh) var(--ars-p-hi) var(--ars-p-hi) var(--ars-p-sh);
   border-radius: 0;
   mix-blend-mode: normal;
-  padding: .75em 1em .8em;
+  padding: .6em .9em .65em;
 }
 .callout-title {
   align-items: center;
   font-size: .72em;
   font-weight: 700;
-  letter-spacing: .14em;
+  letter-spacing: .1em;
   text-transform: uppercase;
 }
 .callout-icon .svg-icon { width: 14px; height: 14px; }
@@ -639,9 +698,8 @@ input[type="checkbox"].task-list-item-checkbox:checked::after {
 .callout-content > :first-child { margin-top: .3em; }
 .callout-content > :last-child { margin-bottom: 0; }
 .callout:is([data-callout="quote"], [data-callout="cite"]) > .callout-content {
-  font-family: var(--ars-gothic);
-  font-size: 1.25em;
-  line-height: 1.3;
+  font-style: italic;
+  line-height: 1.6;
 }
 
 /* встроенные заметки ![[…]] — такая же вдавленная панель */
@@ -1021,6 +1079,21 @@ body:not(.is-phone) .modal:not(.mod-settings):not(.mod-community-modal):not(.mod
 .mobile-toolbar-option.mobile-tap {
   background-color: var(--ars-well);
   border-color: var(--ars-sh) var(--ars-hi) var(--ars-hi) var(--ars-sh);
+}
+
+/* выезжающие панели: Obsidian скругляет их на iPad через .is-tablet — возвращаем прямые углы */
+body.is-mobile, body.is-tablet, body.is-phone {
+  --mobile-sidebar-radius: 0;
+  --view-header-action-radius: 0;
+}
+.workspace-drawer .workspace-drawer-header-icon,
+.workspace-drawer .mod-raised {
+  background-color: var(--ars-face);
+  border: 2px solid;
+  border-color: var(--ars-hi) var(--ars-sh) var(--ars-sh) var(--ars-hi);
+  box-shadow: inset -1px -1px 0 var(--ars-mid);
+  border-radius: 0;
+  backdrop-filter: none;
 }
 
 /* выезжающие панели */
