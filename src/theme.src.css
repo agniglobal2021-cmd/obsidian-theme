@@ -2,7 +2,7 @@
  * Ars Memoria — тема Obsidian от NOEASY (noeasy.xyz)
  *
  * Гримуар в окне старого «Проводника» Windows 95.
- * Заголовки — KJV 1611 (готика с кириллицей, SIL OFL 1.1, Fredrick R. Brennan).
+ * Заголовки — Wolgadeutsche (Serg Shishin, бесплатно для личного и коммерческого использования).
  * Текст — Ubuntu Mono (Ubuntu Font Licence 1.0, Canonical).
  * Логотип NOEASY — собственность автора темы.
  *
@@ -14,6 +14,36 @@
 name: Ars Memoria
 id: ars-memoria
 settings:
+    -
+        id: ars-colors
+        title: Цвета
+        type: heading
+        level: 2
+        collapsed: false
+    -
+        id: ars-red
+        title: Акцентный цвет
+        description: Буквица, кресты списков, номера, H4, первый столбец таблиц. Кнопка ↺ рядом с цветом возвращает исходный.
+        type: variable-themed-color
+        format: hex
+        opacity: false
+        default-light: '#7d2416'
+        default-dark: '#cf6a52'
+    -
+        id: ars-link
+        title: Цвет ссылок
+        description: Ссылки на заметки и сайты. Кнопка ↺ рядом с цветом возвращает исходный — позолоту в светлой теме и киноварь в тёмной.
+        type: variable-themed-color
+        format: hex
+        opacity: false
+        default-light: '#674509'
+        default-dark: '#cf6a52'
+    -
+        id: ars-noise
+        title: Шум
+        type: heading
+        level: 2
+        collapsed: false
     -
         id: ars-no-grain
         title: Без шума на листе
@@ -29,7 +59,18 @@ settings:
 /* ───────────────────────── Шрифты ───────────────────────── */
 
 @font-face { font-family: "Ars Gothic"; font-weight: 400; font-style: normal; font-display: swap;
-  src: url("{{FONT:KJV1611-subset.woff2}}") format("woff2"); }
+  src: url("{{FONT:Wolgadeutsche.woff2}}") format("woff2"); }
+/* «», …, [], № для готики — от Ubuntu Mono Bold: в Wolgadeutsche «» нарисованы как "", остальных знаков нет */
+@font-face { font-family: "Ars Gothic"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("{{FONT:gothic-extra-latin.woff2}}") format("woff2");
+  unicode-range: U+005B, U+005D, U+00AB, U+00BB, U+2026; }
+@font-face { font-family: "Ars Gothic"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("{{FONT:gothic-extra-cyrillic.woff2}}") format("woff2");
+  unicode-range: U+2116; }
+/* пустые знаки препинания для буквицы: у абзаца «Сера» кавычка не выходит огромной (src/tools/fonts.py) */
+@font-face { font-family: "Ars Blank"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("{{FONT:initial-blank.woff2}}") format("woff2");
+  unicode-range: U+0021-002F, U+003A-0040, U+005B-0060, U+007B-007E, U+00A1-00BF, U+2010-205E; }
 
 @font-face { font-family: "Ars Mono"; font-weight: 400; font-style: normal; font-display: swap;
   src: url("{{FONT:ubuntu-mono-latin-400-normal.woff2}}") format("woff2");
@@ -59,13 +100,14 @@ settings:
 /* ───────────────────────── Общие переменные ───────────────────────── */
 
 body {
-  --ars-gothic: "Ars Gothic", "UnifrakturMaguntia", Georgia, serif;
+  --ars-gothic: "Ars Gothic", "Ars Mono", Georgia, serif;
   --ars-mono: "Ars Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
   --ars-grain: url("{{IMG:grain.png}}");
   --ars-logo: url("{{IMG:logo.png}}");
   --ars-cross: url("{{SVG:cross}}");
   --ars-check: url("{{SVG:check}}");
+  --ars-arrow: url("{{SVG:arrow}}");
 
   /* шрифты */
   --font-text-theme: var(--ars-mono);
@@ -79,17 +121,17 @@ body {
 
   /* заголовки: H1–H3 готикой, H4–H6 моноширинными капителями */
   --inline-title-font: var(--ars-gothic);
-  --inline-title-size: 3.6em;
+  --inline-title-size: 2.1em;
   --inline-title-weight: 400;
-  --inline-title-line-height: 1.1;
-  --inline-title-margin-bottom: .3em;
-  --inline-title-color: var(--ars-red);
+  --inline-title-line-height: 1.12;
+  --inline-title-margin-bottom: .8em;
+  --inline-title-color: var(--ars-ink);
   --h1-font: var(--ars-gothic); --h1-size: 2.3em;  --h1-weight: 400; --h1-line-height: 1.1;  --h1-letter-spacing: .005em;
   --h2-font: var(--ars-gothic); --h2-size: 1.7em;  --h2-weight: 400; --h2-line-height: 1.15; --h2-letter-spacing: .005em;
-  --h3-font: var(--ars-mono);   --h3-size: 1.12em; --h3-weight: 700; --h3-line-height: 1.4;  --h3-letter-spacing: 0;
-  --h4-font: var(--ars-mono);   --h4-size: .78em;  --h4-weight: 700; --h4-line-height: 1.5;  --h4-letter-spacing: .16em; --h4-color: var(--ars-red);
-  --h5-font: var(--ars-mono);   --h5-size: .74em;  --h5-weight: 700; --h5-line-height: 1.5;  --h5-letter-spacing: .14em; --h5-color: var(--text-muted);
-  --h6-font: var(--ars-mono);   --h6-size: .74em;  --h6-weight: 400; --h6-line-height: 1.5;  --h6-letter-spacing: .14em; --h6-color: var(--text-muted);
+  --h3-font: var(--ars-mono);   --h3-size: 1em;    --h3-weight: 400; --h3-line-height: 1.5;  --h3-letter-spacing: .14em;
+  --h4-font: var(--ars-mono);   --h4-size: .82em;  --h4-weight: 400; --h4-line-height: 1.5;  --h4-letter-spacing: .16em; --h4-color: var(--ars-red);
+  --h5-font: var(--ars-mono);   --h5-size: .78em;  --h5-weight: 400; --h5-line-height: 1.5;  --h5-letter-spacing: .14em; --h5-color: var(--text-muted);
+  --h6-font: var(--ars-mono);   --h6-size: .78em;  --h6-weight: 400; --h6-line-height: 1.5;  --h6-letter-spacing: .14em; --h6-color: var(--text-muted);
 
   /* Win95: прямые углы везде */
   --radius-s: 0; --radius-m: 0; --radius-l: 0; --radius-xl: 0;
@@ -133,8 +175,8 @@ body {
   --ars-ink: #2b2119;           /* чернила */
   --ars-muted: #5f4d3a;
   --ars-faint: #7d6a54;
-  --ars-red: #7d2416;           /* киноварь */
-  --ars-red-hover: #9a3220;
+  --ars-red: #7d2416;           /* киноварь — акцент, меняется в Style Settings */
+  --ars-link: #674509;          /* ссылки — позолота, меняется в Style Settings */
   --ars-gold: #8c6420;
   --ars-on-red: #f6ead2;
 
@@ -160,8 +202,8 @@ body {
   --ars-win-mid: #7a6448;
   --ars-field: #cdbb9c;
 
-  --ars-select: rgba(125, 36, 22, .24);   /* выделение текста — киноварь */
-  --ars-mark: rgba(125, 36, 22, .18);
+  --ars-select: color-mix(in srgb, var(--ars-red) 24%, transparent);   /* выделение текста — киноварь */
+  --ars-mark: color-mix(in srgb, var(--ars-red) 18%, transparent);
   --ars-grid: rgba(43, 33, 25, .13);
   --ars-graph-line: rgba(43, 33, 25, .38);
 
@@ -183,7 +225,7 @@ body {
   --ars-muted: #b6a892;
   --ars-faint: #8d8273;
   --ars-red: #cf6a52;
-  --ars-red-hover: #e0806a;
+  --ars-link: #cf6a52;          /* ссылки — киноварь */
   --ars-gold: #d6aa58;
   --ars-on-red: #1f1a17;
 
@@ -210,7 +252,7 @@ body {
   --ars-field: #2f2825;
 
   --ars-select: rgba(214, 168, 80, .30);  /* выделение текста — позолота */
-  --ars-mark: rgba(207, 106, 82, .25);
+  --ars-mark: color-mix(in srgb, var(--ars-red) 25%, transparent);
   --ars-grid: rgba(235, 222, 196, .09);
   --ars-graph-line: rgba(235, 222, 196, .30);
 
@@ -225,6 +267,8 @@ body {
 /* ───────────────────────── Переменные Obsidian ───────────────────────── */
 
 .theme-light, .theme-dark {
+  /* оттенок акцента при наведении считается из самого акцента, чтобы работал и выбранный цвет */
+  --ars-red-hover: color-mix(in oklch, var(--ars-red) 82%, white);
   --mono-100: var(--ars-ink);
 
   --background-primary: var(--ars-page);
@@ -300,14 +344,19 @@ body {
   --input-shadow: none;
   --input-shadow-hover: none;
 
-  --link-color: var(--ars-ink);
-  --link-color-hover: var(--ars-red);
-  --link-external-color: var(--ars-ink);
-  --link-external-color-hover: var(--ars-red);
-  --link-unresolved-color: var(--ars-muted);
-  --link-unresolved-opacity: 1;
-  --link-unresolved-decoration-color: color-mix(in srgb, var(--ars-red) 45%, transparent);
-  --link-decoration-thickness: 1px;
+  /* ссылки — жирные, без подчёркивания, своим цветом */
+  --ars-link-hover: color-mix(in oklch, var(--ars-link) 82%, white);
+  --link-weight: 700;
+  --link-decoration: none;
+  --link-decoration-hover: none;
+  --link-external-decoration: none;
+  --link-external-decoration-hover: none;
+  --link-color: var(--ars-link);
+  --link-color-hover: var(--ars-link-hover);
+  --link-external-color: var(--ars-link);
+  --link-external-color-hover: var(--ars-link-hover);
+  --link-unresolved-color: var(--ars-link);
+  --link-unresolved-opacity: .68;
 
   --list-marker-color: var(--ars-red);
   --list-marker-color-hover: var(--ars-red);
@@ -367,10 +416,9 @@ body {
 
 /* iPhone: всё на ступень меньше */
 .is-phone {
-  --inline-title-size: 3em;
+  --inline-title-size: 1.6em;
   --h1-size: 2em;
   --h2-size: 1.5em;
-  --h3-size: 1.08em;
 }
 
 /* ───────────────────────── Лист заметки ───────────────────────── */
@@ -430,24 +478,30 @@ body.ars-no-grain .workspace-leaf-content:is([data-type="markdown"], [data-type=
   background-color: transparent;
 }
 
-/* заголовок заметки: готика, под ним всегда бороздка */
+/* название заметки — картуш: двойная тонкая рамка, как у вклеек, название по центру.
+   Строки выравниваются по длине, чтобы одно слово не висело внизу */
 .inline-title:not([data-level]) {
+  --ars-frame: linear-gradient(var(--ars-p-sh), var(--ars-p-sh));
   letter-spacing: .005em;
-  padding-bottom: .12em;
-  border-bottom: 1px solid var(--ars-p-sh);
-  box-shadow: 0 1px 0 var(--ars-p-hi);
+  text-align: center;
+  text-wrap: balance;
+  padding: .5em .8em .55em;
+  border: 1px solid var(--ars-p-sh);
+  box-shadow: 0 1px 0 var(--ars-p-hi), inset 0 1px 0 var(--ars-p-hi);
+  /* внутренняя рамка — четыре линии фоном: псевдоэлемент в редактируемом названии
+     вместе с text-wrap: balance добавлял пустую строку */
+  background:
+    var(--ars-frame) 4px 4px / calc(100% - 8px) 1px no-repeat,
+    var(--ars-frame) 4px calc(100% - 4px) / calc(100% - 8px) 1px no-repeat,
+    var(--ars-frame) 4px 4px / 1px calc(100% - 8px) no-repeat,
+    var(--ars-frame) calc(100% - 4px) 4px / 1px calc(100% - 8px) no-repeat;
 }
+/* на iPhone картуш шире текста, вровень с рамкой свойств */
+.is-phone .inline-title:not([data-level]) { padding: .45em .5em .5em; margin-inline: -12px; }
 
-/* готика — только заголовок заметки, H1 и H2; шире пробелы между словами, чтобы длинные заголовки читались */
-.inline-title:not([data-level]),
-.markdown-rendered :is(h1, h2),
-.markdown-source-view.mod-cm6 :is(.HyperMD-header-1, .HyperMD-header-2) {
-  word-spacing: .14em;
-}
-
-/* H4–H6 — моноширинные капители */
-.markdown-rendered :is(h4, h5, h6),
-.markdown-source-view.mod-cm6 :is(.HyperMD-header-4, .HyperMD-header-5, .HyperMD-header-6) {
+/* H3–H6 — моноширинные капители с разрядкой, без жирного: легче готического H2 */
+.markdown-rendered :is(h3, h4, h5, h6),
+.markdown-source-view.mod-cm6 :is(.HyperMD-header-3, .HyperMD-header-4, .HyperMD-header-5, .HyperMD-header-6) {
   text-transform: uppercase;
 }
 .markdown-rendered :is(h2, h3) { margin-block-end: .45em; }
@@ -457,11 +511,24 @@ body.ars-no-grain .workspace-leaf-content:is([data-type="markdown"], [data-type=
 .markdown-rendered a,
 .cm-s-obsidian :is(.cm-hmd-internal-link, .cm-link, .cm-url) .cm-underline,
 .cm-s-obsidian span.cm-url {
-  text-decoration-color: var(--ars-red);
-  text-decoration-thickness: 1px;
-  text-underline-offset: .22em;
+  text-decoration: none;
 }
-.markdown-rendered a.is-unresolved { text-decoration-style: dotted; }
+/* ссылка на сайт: вместо значка Obsidian — пиксельная стрелка цветом ссылки */
+:is(.markdown-rendered, .markdown-source-view) .external-link {
+  background-image: none;
+  padding-inline-end: 0;
+}
+:is(.markdown-rendered, .markdown-source-view) .external-link::after {
+  content: "";
+  display: inline-block;
+  width: .5em;
+  height: .5em;
+  margin-inline-start: .22em;
+  vertical-align: .32em;
+  background-color: currentColor;
+  -webkit-mask: var(--ars-arrow) 0 0 / 100% 100% no-repeat;
+  mask: var(--ars-arrow) 0 0 / 100% 100% no-repeat;
+}
 
 /* выделение ==…== — полоса киновари в нижней половине строки */
 .markdown-rendered mark,
@@ -476,6 +543,16 @@ body.ars-no-grain .workspace-leaf-content:is([data-type="markdown"], [data-type=
   border: 1px solid;
   border-color: var(--ars-p-sh) var(--ars-p-hi) var(--ars-p-hi) var(--ars-p-sh);
   padding: 0 .3em;
+  /* рамка не рвётся: короткий код целиком переходит на следующую строку,
+     длинный становится многострочной рамкой */
+  display: inline-block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+/* в редакторе код — часть строки; на переносе каждая половинка в целой рамке */
+.cm-s-obsidian span.cm-inline-code:not(.cm-formatting) {
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 .markdown-rendered pre {
   border: 2px solid;
@@ -489,6 +566,7 @@ body.ars-no-grain .workspace-leaf-content:is([data-type="markdown"], [data-type=
   font-weight: 700;
   text-decoration: none;
 }
+.markdown-rendered sup, .cm-s-obsidian span.cm-footref { line-height: 0; }
 .markdown-rendered .footnotes { color: var(--ars-muted); font-size: .85em; line-height: 1.5; }
 .markdown-rendered .footnotes ol > li::marker { color: var(--ars-red); font-weight: 700; }
 
@@ -515,14 +593,19 @@ body.ars-no-grain .workspace-leaf-content:is([data-type="markdown"], [data-type=
 .markdown-rendered .markdown-preview-sizer > .mod-header ~ .el-hr:not(.el-hr ~ .el-hr) + .el-p > p::first-letter,
 .markdown-source-view.mod-cm6 .cm-content > .HyperMD-hr:not(.HyperMD-hr ~ .HyperMD-hr):not(.cm-gap ~ .HyperMD-hr) + .cm-line:not([class*="HyperMD"]):not(:has(> br:only-child))::first-letter,
 .markdown-source-view.mod-cm6 .cm-content > .HyperMD-hr:not(.HyperMD-hr ~ .HyperMD-hr):not(.cm-gap ~ .HyperMD-hr) + .cm-line:has(> br:only-child) + .cm-line:not([class*="HyperMD"])::first-letter {
+  /* буквица на две строки: верх заглавной — по верху заглавных первой строки,
+     низ — по линии второй. Заглавная Wolgadeutsche — 0.72 кегля, две строки
+     от верха заглавных до линии — 2.3 кегля текста, отсюда 3.194em */
   float: left;
-  font-family: var(--ars-gothic);
+  font-family: "Ars Blank", var(--ars-gothic);
   font-weight: 400;
   font-style: normal;
+  text-transform: uppercase;
   color: var(--ars-red);
-  font-size: 3.25em;
-  line-height: .86;
-  margin: .12em .12em 0 -.02em;
+  font-size: 3.194em;
+  line-height: .9;
+  margin: .117em .19em 0 -.02em;
+  padding: 0;
 }
 .markdown-source-view.mod-cm6 .cm-content > .HyperMD-hr:not(.HyperMD-hr ~ .HyperMD-hr):not(.cm-gap ~ .HyperMD-hr) + .cm-line:not([class*="HyperMD"]):not(:has(> br:only-child)),
 .markdown-source-view.mod-cm6 .cm-content > .HyperMD-hr:not(.HyperMD-hr ~ .HyperMD-hr):not(.cm-gap ~ .HyperMD-hr) + .cm-line:has(> br:only-child) + .cm-line:not([class*="HyperMD"]) {
@@ -535,7 +618,7 @@ body.ars-no-grain .workspace-leaf-content:is([data-type="markdown"], [data-type=
 
 /* во встроенных заметках буквиц нет */
 .markdown-embed .markdown-preview-sizer > .el-p > p::first-letter {
-  float: none; font: inherit; color: inherit; margin: 0;
+  float: none; font: inherit; color: inherit; margin: 0; text-transform: none; background: none;
 }
 
 /* ───────────────────────── Списки ───────────────────────── */
@@ -759,7 +842,7 @@ input[type="checkbox"].task-list-item-checkbox:checked::after {
 /* ───────────────────────── Свойства заметки ───────────────────────── */
 
 .metadata-container {
-  --metadata-label-font-size: .72em;
+  --metadata-label-font-size: .8em;
   --metadata-input-font-size: .8em;
   --metadata-label-text-color: var(--ars-muted);
   margin-bottom: 1.4em;

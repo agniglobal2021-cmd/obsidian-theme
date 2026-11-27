@@ -33,6 +33,9 @@ CROSS = pixels(_top + ['xxxxxxxxxxx'] + _top[::-1])
 # галочка Windows 95, 7×7
 CHECK = pixels(['......x', '.....xx', 'x...xxx', 'xx.xxx.', 'xxxxx..', '.xxx...', '..x....'])
 
+# стрелка ↗ 7×7 — значок ссылки на сайт
+ARROW = pixels(['...xxxx', '.....xx', '....x.x', '...x..x', '..x....', '.x.....', 'x......'])
+
 OUTLINE = '#1c140e'
 
 
@@ -57,6 +60,7 @@ def note(paper):
 SVGS = {
     'cross': CROSS,
     'check': CHECK,
+    'arrow': ARROW,
     # светлая тема — пергамент
     'folder-light': folder('#e2d3b2', '#f2e9d4'),
     'folder-open-light': folder_open('#e2d3b2', '#c2ad88'),

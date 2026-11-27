@@ -24,6 +24,7 @@ SOFTWARE.
 
 The MIT License covers the theme's CSS and build script only. It does not cover:
 
-- the KJV 1611 font (SIL Open Font License 1.1, see src/assets/fonts/KJV1611-OFL.txt);
+- the Wolgadeutsche font by Serg Shishin (free for personal and commercial use, see src/assets/fonts/Wolgadeutsche-readme.txt);
+- gothic-extra-*.woff2, subsets of Ubuntu Mono Bold (Ubuntu Font Licence 1.0);
 - the Ubuntu Mono font (Ubuntu Font Licence 1.0, see src/assets/fonts/UbuntuMono-UFL.txt);
 - the NOEASY logo and artwork (all rights reserved by the author).
